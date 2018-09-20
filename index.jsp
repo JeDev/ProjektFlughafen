@@ -80,11 +80,11 @@
                         out.println("<br><h2> Flughafen hinzuf&uumlgen </h2>");
 
                         out.println("<div class='formular'>");
-                        out.println("<form action='AddAirport.jsp' method='POST' target='_self'>");
+                        out.println("<form action='index.jsp' method='POST' target='_self'>");
                         out.println("K&uumlrzel: <input name='getKuerzel' type='text'>");
                         out.println("Bezeichnung: <input name='getBezeichnung' type='text'>");
                         out.println("IP-Adresse: <input name='getIP' type='text'>");
-                        out.println("<br><input name='senden' type='submit' value='Senden'></form>");
+                        out.println("<br><input name='senden' type='submit' value='Add'></form>");
                         out.println("</div>");
 
                     }
@@ -100,6 +100,11 @@
 
                         PreparedStatement pstmtAdd = conn.prepareStatement (sql_query);
                         pstmtAdd.executeUpdate();
+
+                        out.println("<br><form action='index.jsp' method='POST' target='_self'><h3>Der Datensatz " + 
+                        (request.getParameter("getKuerzel")) + " wurde erfolgreich erstellt</h3>" + 
+                        "<input name='Ok' class='button' type='submit' value='Ok'></form>");
+
                     }
                     
                 }
