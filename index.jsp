@@ -59,8 +59,19 @@
 
         
         if(request.getParameter("senden") != null) {
+            
             switch(request.getParameter("senden")) {
+                
                 case"L\u00f6schen": {
+                    
+                    if(request.getParameter("radio") == null) {
+                       
+                        out.println("<h3>Bitte w\u00e4hlen Sie einen Flughafen aus</h3>");
+                   
+                    }
+
+                    else {
+
                     sql_query = "Delete from flughafen" +
                                 " Where Kurzel='" + (request.getParameter("radio")) + "';";
 
@@ -71,10 +82,14 @@
                     out.println("<br><form action='index.jsp' method='POST' target='_self'><h3>Der Datensatz " + 
                     (request.getParameter("radio")) + " wurde erfolgreich gel\u00f6scht</h3>" + 
                     "<input name='Ok' class='button' type='submit' value='Ok'></form>");
+                   
+                    }
                 }
+
                 break;
 
                 case"Add": {
+
                     if(request.getParameter("getKuerzel") == null) {
 
                         out.println("<br><h2> Flughafen hinzuf&uumlgen </h2>");
@@ -105,11 +120,54 @@
                         (request.getParameter("getKuerzel")) + " wurde erfolgreich erstellt</h3>" + 
                         "<input name='Ok' class='button' type='submit' value='Ok'></form>");
 
-                    }
-                    
+                    }   
+                
                 }
+
+                break;
+
+                case"Edit": {
+
+                    if(request.getParameter("radio") == null) {
+                        
+                        out.println("<h3>Bitte w\u00e4hlen Sie einen Flughafen aus</h3>");
+                    }
+
+
+                    if(request.getParameter("radio") != null) {
+
+                        String kurzel = request.getParameter("radio");
+                        
+                        
+                        sql_query =    " select * from flughafen " +
+                                        " where KURZEL = '" + kurzel  +"';";
+
+                        stmt = conn.createStatement(); 
+                        PreparedStatement pstmt2 = conn.prepareStatement (sql_query);
+		                ResultSet res2 = pstmt2.executeQuery();
+
+
+                        out.println("<br><h2> Flughafen bearbeiten </h2>");
+
+                        while(res2.next()){
+
+                        out.println("<div class='formular'>");
+                        out.println("<form action='index.jsp' method='POST' target='_self'>");
+                        out.println("K&uumlrzel: <input name='getKuerzel' type='text' value='" + res2.getString(1) +"'>");
+                        out.println("Bezeichnung: <input name='getBezeichnung' type='text' value='" + res2.getString(2) +"'>");
+                        out.println("IP-Adresse: <input name='getIP' type='text' value='" + res2.getString(3) +"'>");
+                        out.println("<br><input name='senden' type='submit' value='Add'></form>");
+                        out.println("</div>");
+
+                        }
+                    }
+
+                }
+
             }
+
         }
+
 	}
 
     catch(SQLException e){
