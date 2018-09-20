@@ -36,7 +36,7 @@
 		out.println ("<h3>Flughafen </h3>");
 		int rowcont = 0;
         
-        out.println("<form action='DeleteAirport.jsp' method='POST' target='_self'>");
+        out.println("<form action='index.jsp' method='POST' target='_self'>");
         out.println("<table id='Flughafenliste' <tr> <th> </th> <th>Kuerzel</th> <th>Bezeichnung</th> <th>IP-Adresse</th> </tr>");
 
 
@@ -51,14 +51,14 @@
         }
 
 		out.println("</table>"); 
-        out.println("<input name='senden' class='button' type='submit' value='Add'></form>");
-        out.println("<br><input name='senden' class='button' type='submit' value='L\u00f6schen'>");
+        out.println("<br><input name='senden' class='button' type='submit' value='Add'>");
+        out.println("<input name='senden' class='button' type='submit' value='L\u00f6schen'>");
         out.println("<input name='senden' class='button' type='submit' value='Edit'></form>");
 
         String sql_query;
 
         
-        if(request.getParameter("senden") != null){
+        if(request.getParameter("senden") != null) {
             switch(request.getParameter("senden")) {
                 case"L\u00f6schen": {
                     sql_query = "Delete from flughafen" +
@@ -68,13 +68,39 @@
                     PreparedStatement pstmt1 = conn.prepareStatement (sql_query);
                     pstmt1.executeUpdate();
 
-                    out.println("<br><h3>Der Datensatz " + (request.getParameter("radio")) + " wurde erfolgreich gel\u00f6scht</h3>");
+                    out.println("<br><form action='index.jsp' method='POST' target='_self'><h3>Der Datensatz " + 
+                    (request.getParameter("radio")) + " wurde erfolgreich gel\u00f6scht</h3>" + 
+                    "<input name='Ok' class='button' type='submit' value='Ok'></form>");
                 }
-
                 break;
 
                 case"Add": {
+                    if(request.getParameter("getKuerzel") == null) {
 
+                        out.println("<br><h2> Flughafen hinzuf&uumlgen </h2>");
+
+                        out.println("<div class='formular'>");
+                        out.println("<form action='AddAirport.jsp' method='POST' target='_self'>");
+                        out.println("K&uumlrzel: <input name='getKuerzel' type='text'>");
+                        out.println("Bezeichnung: <input name='getBezeichnung' type='text'>");
+                        out.println("IP-Adresse: <input name='getIP' type='text'>");
+                        out.println("<br><input name='senden' type='submit' value='Senden'></form>");
+                        out.println("</div>");
+
+                    }
+
+                    else if(request.getParameter("getKuerzel") != null) {
+
+                        String kuerzel = request.getParameter("getKuerzel");
+                        String bezeichnung = request.getParameter("getBezeichnung");
+                        String IP = request.getParameter("getIP");
+                    
+                        sql_query = " INSERT INTO flughafen " +
+                                    " VALUES ('" + kuerzel + "', '" + bezeichnung + "', '" + IP + "');";
+
+                        PreparedStatement pstmtAdd = conn.prepareStatement (sql_query);
+                        pstmtAdd.executeUpdate();
+                    }
                     
                 }
             }
