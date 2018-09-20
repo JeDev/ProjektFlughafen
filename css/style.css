@@ -1,10 +1,15 @@
 
-body { width: 80%}
+body { 
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+}
 
 #Flughafenliste {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
-    width: 80%;
+    width: 100%;
 }
 
 #Flughafenliste td, #Flughafenliste th {
@@ -63,6 +68,7 @@ input[type=submit]:hover {
 }
 
 .formular {
+    width: 100%;
     border-radius: 5px;
     background-color: #f2f2f2;
     padding: 20px;

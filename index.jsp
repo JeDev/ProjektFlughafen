@@ -36,7 +36,7 @@
 		out.println ("<h3>Flughafen </h3>");
 		int rowcont = 0;
         
-        out.println("<form action='index.jsp' method='POST' target='_self'>");
+        out.println("<form action='index.jsp' class= 'main' method='POST' target='_self'>");
         out.println("<table id='Flughafenliste' <tr> <th> </th> <th>Kuerzel</th> <th>Bezeichnung</th> <th>IP-Adresse</th> </tr>");
 
 
@@ -99,7 +99,7 @@
                         out.println("K&uumlrzel: <input name='getKuerzel' type='text'>");
                         out.println("Bezeichnung: <input name='getBezeichnung' type='text'>");
                         out.println("IP-Adresse: <input name='getIP' type='text'>");
-                        out.println("<br><input name='senden' type='submit' value='Add'></form>");
+                        out.println("<br><br><input class= 'button' name='senden' type='submit' value='Add'></form>");
                         out.println("</div>");
 
                     }
@@ -139,7 +139,7 @@
                         String kurzel = request.getParameter("radio");
                         
                         
-                        sql_query =    " select * from flughafen " +
+                        sql_query =     " select * from flughafen " +
                                         " where KURZEL = '" + kurzel  +"';";
 
                         stmt = conn.createStatement(); 
@@ -154,12 +154,33 @@
                         out.println("<div class='formular'>");
                         out.println("<form action='index.jsp' method='POST' target='_self'>");
                         out.println("K&uumlrzel: <input name='getKuerzel' type='text' value='" + res2.getString(1) +"'>");
+                        out.println("K&uumlrzel: <input name='getID' type='hidden' value='" + res2.getString(1) +"'>");
                         out.println("Bezeichnung: <input name='getBezeichnung' type='text' value='" + res2.getString(2) +"'>");
                         out.println("IP-Adresse: <input name='getIP' type='text' value='" + res2.getString(3) +"'>");
-                        out.println("<br><input name='senden' type='submit' value='Add'></form>");
+                        out.println("<br><input class= 'button' name='senden' type='submit' value='Edit'></form>");
                         out.println("</div>");
 
+
+
                         }
+                    }
+
+                    else{
+                        String kuerzel = request.getParameter("getKuerzel");
+                        String bezeichnung = request.getParameter("getBezeichnung");
+                        String IP = request.getParameter("getIP");
+                    
+                        sql_query = " update flughafen " +
+                                    " Set KURZEL = '" + kuerzel + "', BEZEICHNUNG = '" + bezeichnung + "', IP4_Socket = '" + IP + "' " +
+                                     "Where Kurzel = '" + request.getParameter("getID")+ "' ;";
+
+                        PreparedStatement pstmtEdit = conn.prepareStatement (sql_query);
+                        pstmtEdit.executeUpdate();
+
+                        out.println("<br><form action='index.jsp' method='POST' target='_self'><h3>Der Datensatz " + 
+                        (request.getParameter("getKuerzel")) + " wurde erfolgreich geändert</h3> " + 
+                        "<input name='Ok' class='button' type='submit' value='Ok'></form>");
+
                     }
 
                 }
